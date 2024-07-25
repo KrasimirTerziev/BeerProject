@@ -1,6 +1,7 @@
 package com.example.beerproject.controllers;
 
 import com.example.beerproject.models.Beer;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -35,5 +36,11 @@ public class BeerController {
                         HttpStatus.NOT_FOUND,
                         String.format("Beer with id %d not found.", id)
                 ));
+    }
+
+    @PostMapping
+    public Beer create(@Valid @RequestBody Beer beer) {
+        beers.add(beer);
+        return beer;
     }
 }
