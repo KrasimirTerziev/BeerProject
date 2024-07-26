@@ -3,25 +3,29 @@ package com.example.beerproject.services;
 import com.example.beerproject.exceptions.DuplicateEntityException;
 import com.example.beerproject.exceptions.EntityNotFoundExceptions;
 import com.example.beerproject.models.Beer;
+import com.example.beerproject.repositories.BeerRepository;
 import com.example.beerproject.repositories.BeerRepositoryImpl;
 
 import java.util.List;
 
-public class BeerServiceImpl {
-    public BeerRepositoryImpl repository;
+public class BeerServiceImpl implements BeerService {
+    public BeerRepository repository;
 
-    public BeerServiceImpl() {
-        this.repository = new BeerRepositoryImpl();
+    public BeerServiceImpl(BeerRepository repository) {
+        this.repository = repository;
     }
 
+    @Override
     public List<Beer> getAll() {
         return repository.getAll();
     }
 
+    @Override
     public Beer getById(int id) {
         return repository.getById(id);
     }
 
+    @Override
     public void create(Beer beer) {
         boolean duplicateExists = true;
         try {
@@ -36,6 +40,7 @@ public class BeerServiceImpl {
         repository.create(beer);
     }
 
+    @Override
     public void update(Beer beer) {
         boolean duplicateExists = true;
         try {
@@ -51,7 +56,8 @@ public class BeerServiceImpl {
         }
         repository.update(beer);
     }
-    public void delete( int id){
+    @Override
+    public void delete(int id){
         repository.delete(id);
     }
 }

@@ -1,10 +1,13 @@
 package com.example.beerproject.controllers;
 
+import com.example.beerproject.configuration.BeanConfiguration;
 import com.example.beerproject.exceptions.DuplicateEntityException;
 import com.example.beerproject.exceptions.EntityNotFoundExceptions;
 import com.example.beerproject.models.Beer;
-import com.example.beerproject.services.BeerServiceImpl;
+import com.example.beerproject.services.BeerService;
 import jakarta.validation.Valid;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -14,10 +17,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/beers")
 public class BeerController {
-    private BeerServiceImpl service;
+    private BeerService service;
 
     public BeerController() {
-        this.service = new BeerServiceImpl();
+        //this.service = new BeerServiceImpl();
+        ApplicationContext context = new AnnotationConfigApplicationContext(BeanConfiguration.class);
+        this.service = context.getBean(BeerService.class);
     }
 
     @GetMapping
@@ -61,9 +66,9 @@ public class BeerController {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable int id) {
-        try{
+        try {
             service.delete(id);
-        }catch ( EntityNotFoundExceptions e){
+        } catch (EntityNotFoundExceptions e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
